@@ -18,6 +18,7 @@
         var neutralrssi = -90;
         var refreshRate = networkdata.refreshRate;
         var newState = false;
+	console.log(networkdata);
 
         function key(obj) {
             return obj.id;
