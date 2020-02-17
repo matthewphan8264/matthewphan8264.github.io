@@ -16,9 +16,9 @@ const RESOURCES = {
 "/assets\packages\font_awesome_flutter\lib\fonts\fa-brands-400.ttf": "3ca122272cfac33efb09d0717efde2fa",
 "/assets\packages\font_awesome_flutter\lib\fonts\fa-regular-400.ttf": "bdd8d75eb9e6832ccd3117e06c51f0d3",
 "/assets\packages\font_awesome_flutter\lib\fonts\fa-solid-900.ttf": "d21f791b837673851dd14f7c132ef32e",
-"/helper.js": "0a804931de7f4e419758f670ab376364",
+"/helper.js": "bf173d120c099006d1633ea040bd8ad6",
 "/index.html": "0020a978f4cbca7638adca33a324f62d",
-"/main.dart.js": "2e03176bd7f4ab11a19a06bb2d086708",
+"/main.dart.js": "c79abb9cf1ded5c1ad8aa22fccf3f113",
 "/main.dart.js.deps": "af8a0d9838f74fbf9b9a486ee2385809"
 };
 

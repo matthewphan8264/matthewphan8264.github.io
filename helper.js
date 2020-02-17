@@ -1,5 +1,5 @@
 ﻿window.myD3Helper = {
-    test: function(networkdata) {
+    test: function(refresh, companions, endpoints, functions, endpointRSSI) {
         var width = 1000;
         var height = 800;
 
@@ -16,36 +16,26 @@
         var currentDataPointer = 0;
         var healthyrssi = -30;
         var neutralrssi = -90;
-        var refreshRate = networkdata.refreshRate;
-        var newState = false;
-	console.log(networkdata);
 
         function key(obj) {
-            return obj.id;
+            return obj.b;
         }
         var distanceLength = 500;
 
-        async function reloadData() {
-            var data = null
-            try {
-                data = await networkdata.network.loadNodesOnly();
-            } catch (err) {
-                if (err.closed == false) {
-                    if (err.newState == true) {
-                        companionNodes = {};
-                        endpointNodes = {};
-                        companionLinks = {};
-                        endpointDownLinks = {};
-                    }
-                    refreshRate = err.refreshRate;
-                    loadData(err.companions, err.endpoints);
-                }
-            }
-        }
+		function reloadData(newState, companions, endpoints, endpointRSSI) {
+			if (newState) {
+				companionNodes = {};
+				endpointNodes = {};
+				companionLinks = {};
+				endpointDownLinks = {};
+			}
+			loadData(companions, endpoints, endpointRSSI);
+		}
 
-        loadData(networkdata.companions, networkdata.endpoints);
 
-        function loadData(companions, endpoints) {
+        loadData(companions, endpoints, endpointRSSI);
+
+        function loadData(companions, endpoints, endpointRSSI) {
             baseNodes = [];
             baseLinks = [];
 
@@ -67,27 +57,19 @@
             companions.forEach(function(companion) {
                 if (companionNodes[key(companion)] === undefined) {
                     companionNodes[key(companion)] = {
-                        name: companion.name,
-                        id: companion.id,
+                        name: companion.a,
+                        id: companion.b,
                         level: 2,
-                        lastseen: companion.last_seen,
-                        master: companion.master,
-                        networkid: companion.networkid,
-                        new: true
+                        //networkid: companion.networkid,
                     }
-                    newState = true;
-                } else {
-                    companionNodes[key(companion)].lastseen = companion.last_seen;
-                    companionNodes[key(companion)].new = false;
                 }
             });
-
             companions.forEach(function(companion) {
-                var rssi = companion.rssi
+                var rssi = 999
                 if (companionLinks[key(companion)] === undefined) {
                     companionLinks[key(companion)] = {
                         target: "User",
-                        source: companion.id,
+                        source: companion.b,
                         duallink: false,
                         linktype: 'down',
                         type: 'companion',
@@ -95,16 +77,14 @@
                         distance: distanceLength + 200,
                         status: getStatus(rssi),
                         rssi: rssi,
-                        new: true
                     }
                 } else {
                     companionLinks[key(companion)].rssi = rssi;
                     companionLinks[key(companion)].status = getStatus(rssi);
-                    companionLinks[key(companion)].new = false;
                 }
             });
 
-            addEndpoints(companions, endpoints);
+            addEndpoints(companions, endpoints, endpointRSSI);
             addToArrays();
 
             if (!initializing) {
@@ -113,34 +93,28 @@
             }
         }
 
-        function addEndpoints(companions, endpoints) {
+        function addEndpoints(companions, endpoints, endpointRSSI) {
             companions.forEach(function(companion) {
+				var rssiIndex = 0
                 endpoints.forEach(function(endpoint) {
+                    if (endpoint.c === companion.b) {
 
-                    if (endpoint.companion === companion.id) {
-
-                        var rssi = endpoint.rssi
+                        var rssi = endpointRSSI[rssiIndex]
 
                         if (endpointNodes[key(endpoint)] === undefined) {
                             endpointNodes[key(endpoint)] = {
-                                name: endpoint.name,
-                                id: endpoint.id,
+                                name: endpoint.a,
+                                id: endpoint.b,
                                 level: 3,
-                                lastseen: endpoint.last_seen,
                                 master: false,
-                                networkid: endpoint.networkid,
-                                new: true
+                                //networkid: endpoint.networkid,
                             }
-                            newState = true;
-                        } else {
-                            endpointNodes[key(endpoint)].lastseen = endpoint.last_seen;
-                            endpointNodes[key(endpoint)].new = false;
                         }
 
                         if (endpointDownLinks[key(endpoint)] === undefined) {
                             endpointDownLinks[key(endpoint)] = {
-                                target: endpoint.id,
-                                source: companion.id,
+                                target: endpoint.b,
+                                source: companion.b,
                                 duallink: false,
                                 linktype: 'down',
                                 type: 'endpoint',
@@ -148,14 +122,13 @@
                                 distance: distanceLength,
                                 status: getStatus(rssi),
                                 rssi: rssi,
-                                new: true
                             };
                         } else {
                             endpointDownLinks[key(endpoint)].rssi = rssi;
                             endpointDownLinks[key(endpoint)].status = getStatus(rssi);
-                            endpointDownLinks[key(endpoint)].new = false;
                         }
                     }
+					rssiIndex = rssiIndex + 1;
                 });
             });
         }
@@ -299,7 +272,7 @@
                     return getNodeColor(d);
                 })
                 .on("mouseover", function(d) {
-                    networkdata.network.updateInformation(d.level, d.id);
+                    functions[0].b(d.level, d.id);
                 })
                 .on("mouseout", function(d) {
                     //hideNodeStats();
@@ -320,7 +293,7 @@
                 .attr("class", "nodeimage")
 
                 .on("mouseover", function(d) {
-                    networkdata.network.updateInformation(d.level, d.id);
+                    functions[0].b(d.level, d.id);
                 })
                 .on("mouseout", function(d) {})
                 .on("click", function(d) {
@@ -376,7 +349,7 @@
                     }
                 })
                 .on("mouseover", function(d) {
-                    networkdata.network.updateLinkInformation(d.rssi);
+                   functions[1].b(d.rssi);
                 })
                 .on("mouseout", function(d) {})
                 .merge(link);
@@ -393,10 +366,6 @@
             else {
                 simulation.alphaTarget(1).restart();
             }*/
-
-            setTimeout(function() {
-                reloadData();
-            }, refreshRate);
         }
 
         function tick() {
@@ -539,8 +508,8 @@
             console.log("testing function");
         }
 
-        var functions = [resetLocation, testPrint];
-        return functions;
+        var functionsOut = [resetLocation, testPrint, reloadData];
+        return functionsOut;
     },
 
 }
