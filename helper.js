@@ -1,7 +1,10 @@
 ﻿window.myD3Helper = {
-    test: function(refresh, companions, endpoints, functions, endpointRSSI) {
-        var width = 1000;
-        var height = 800;
+    getWindowSize() {
+        return [window.innerHeight, window.innerWidth];
+    },
+    test: function(refresh, companions, endpoints, endpointRSSI, inputIn, width, height) {
+        var width = width;
+        var height = height;
 
         var baseNodes = [];
         var baseLinks = [];
@@ -22,6 +25,8 @@
         }
         var distanceLength = 500;
 
+
+
 		function reloadData(newState, companions, endpoints, endpointRSSI) {
 			if (newState) {
 				companionNodes = {};
@@ -32,7 +37,10 @@
 			loadData(companions, endpoints, endpointRSSI);
 		}
 
-
+		function testing() {
+		}
+		function testing2() {
+		}
         loadData(companions, endpoints, endpointRSSI);
 
         function loadData(companions, endpoints, endpointRSSI) {
@@ -272,7 +280,10 @@
                     return getNodeColor(d);
                 })
                 .on("mouseover", function(d) {
-                    functions[0].b(d.level, d.id);
+					inputIn.fy = true;
+					inputIn.go = d.level;
+					inputIn.id = d.id;
+					inputIn.cx.$0();
                 })
                 .on("mouseout", function(d) {
                     //hideNodeStats();
@@ -293,7 +304,10 @@
                 .attr("class", "nodeimage")
 
                 .on("mouseover", function(d) {
-                    functions[0].b(d.level, d.id);
+					inputIn.fy = true;
+					inputIn.go = d.level;
+					inputIn.id = d.id;
+					inputIn.cx.$0();
                 })
                 .on("mouseout", function(d) {})
                 .on("click", function(d) {
@@ -349,7 +363,10 @@
                     }
                 })
                 .on("mouseover", function(d) {
-                   functions[1].b(d.rssi);
+                    inputIn.fy = true;
+					inputIn.go = 0;
+					inputIn.k1 = d.rssi;
+					inputIn.cx.$0();
                 })
                 .on("mouseout", function(d) {})
                 .merge(link);
@@ -508,7 +525,7 @@
             console.log("testing function");
         }
 
-        var functionsOut = [resetLocation, testPrint, reloadData];
+        var functionsOut = [resetLocation, testPrint, reloadData, testing, testing2];
         return functionsOut;
     },
 
