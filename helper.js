@@ -1,4 +1,7 @@
 ﻿window.myD3Helper = {
+    sendMessage(message) {
+        alert(message);
+    },
     getWindowSize() {
         return [window.innerHeight, window.innerWidth];
     },
@@ -25,7 +28,10 @@
         }
         var distanceLength = 500;
 
-
+        var nodehovered = false;
+        var linkhovered = false;
+		var companionHovered = false;
+		var hoveredID = "";
 
 		function reloadData(newState, companions, endpoints, endpointRSSI) {
 			if (newState) {
@@ -265,6 +271,38 @@
             simulation.nodes(baseNodes);
             simulation.force("link").links(baseLinks);
 
+			try {
+				if (nodehovered) {
+					var selectedNode = undefined;
+					if (companionHovered) {
+						selectedNode = companionNodes[hoveredID];
+					} else {
+						selectedNode = endpointNodes[hoveredID];
+					}
+					if (selectedNode != undefined) {
+						inputIn.fy = true;
+						inputIn.go = selectedNode.level;
+						inputIn.id = selectedNode.id;
+						inputIn.cx.$0();
+					}
+				} else if (linkhovered) {
+					var selectedLink = undefined;
+					if (companionHovered) {
+						selectedLink = companionLinks[hoveredID];
+					} else {
+						selectedLink = endpointDownLinks[hoveredID];
+					}
+					if (selectedLink != undefined) {
+						inputIn.fy = true;
+						inputIn.go = 0;
+						inputIn.k1 = selectedLink.rssi;
+						inputIn.cx.$0();
+					}
+				}
+			} catch (err) {
+				console.log(err)
+			}
+
             //Renable for standstill graph
             //simulation.tick(500);
 
@@ -284,12 +322,16 @@
 					inputIn.go = d.level;
 					inputIn.id = d.id;
 					inputIn.cx.$0();
+					hoveredID = d.id;
+					companionHovered = d.type == 'companion';
+					nodehovered = true;
+					linkhovered = false;
                 })
                 .on("mouseout", function(d) {
-                    //hideNodeStats();
+					//nodehovered = false;
                 })
                 .on("click", function(d) {
-                    //selectNode(d.id, d.level);
+
                 })
                 .merge(node);
             /*.call(d3.drag()
@@ -308,8 +350,14 @@
 					inputIn.go = d.level;
 					inputIn.id = d.id;
 					inputIn.cx.$0();
+					hoveredID = d.id;
+					companionHovered = d.type == 'companion';
+					nodehovered = true;
+					linkhovered = false;
                 })
-                .on("mouseout", function(d) {})
+                .on("mouseout", function(d) {
+                    //nodehovered = false;
+				})
                 .on("click", function(d) {
                     //selectNode(d.id, d.level);
                 })
@@ -367,8 +415,14 @@
 					inputIn.go = 0;
 					inputIn.k1 = d.rssi;
 					inputIn.cx.$0();
+					hoveredID = d.target.id;
+					companionHovered = d.type == 'companion';
+					linkhovered = true;
+					nodehovered = false;
                 })
-                .on("mouseout", function(d) {})
+                .on("mouseout", function(d) {
+                    //linkhovered = false;
+                })
                 .merge(link);
 
             simulation.alphaTarget(1).restart();

@@ -14,14 +14,14 @@ const RESOURCES = {
 "/assets\assets\wifirssipoor.png": "6d810e038853c718d1ba491714d8e949",
 "/assets\FontManifest.json": "18eda8e36dfa64f14878d07846d6e17f",
 "/assets\fonts\MaterialIcons-Regular.ttf": "56d3ffdef7a25659eab6a68a3fbfaf16",
-"/assets\LICENSE": "f373f6f16c73999cc74c8e0f7c411c30",
+"/assets\LICENSE": "740da1d42f4110ef61cfae7500b1d709",
 "/assets\packages\cupertino_icons\assets\CupertinoIcons.ttf": "115e937bb829a890521f72d2e664b632",
 "/assets\packages\font_awesome_flutter\lib\fonts\fa-brands-400.ttf": "3ca122272cfac33efb09d0717efde2fa",
 "/assets\packages\font_awesome_flutter\lib\fonts\fa-regular-400.ttf": "bdd8d75eb9e6832ccd3117e06c51f0d3",
 "/assets\packages\font_awesome_flutter\lib\fonts\fa-solid-900.ttf": "d21f791b837673851dd14f7c132ef32e",
-"/helper.js": "9b3e366e0b9c8a639c0926558069e5b9",
-"/index.html": "0020a978f4cbca7638adca33a324f62d",
-"/main.dart.js": "3e10702f28a9560403f47208daf69f55",
+"/helper.js": "d8e41d444f8cd9b59f1bab317508d00f",
+"/index.html": "3642d02d3979f33074eedd874bf243b2",
+"/main.dart.js": "01854314802d019d03567a1ffc2378b5",
 "/main.dart.js.deps": "af8a0d9838f74fbf9b9a486ee2385809"
 };
 
