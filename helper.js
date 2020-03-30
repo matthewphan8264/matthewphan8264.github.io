@@ -8,7 +8,6 @@
     test: function(refresh, companions, endpoints, endpointRSSI, inputIn, width, height) {
         var width = width;
         var height = height;
-
         var baseNodes = [];
         var baseLinks = [];
         var companionNodes = {};
@@ -22,7 +21,6 @@
         var currentDataPointer = 0;
         var healthyrssi = -30;
         var neutralrssi = -90;
-
         function key(obj) {
             return obj.b;
         }
@@ -338,7 +336,7 @@
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
-                .attr("xlink:href", function (d) { return "https://cdn.discordapp.com/emojis/551872136764194824.png?v=1"; })*/
+                .attr("xlink:href", function (d) { return "link"; })*/
             nodeimage = svg.selectAll(".nodeimage").data(baseNodes);
             nodeimage.exit().remove();
             nodeimage.enter()
@@ -547,7 +545,7 @@
 
         function adjustArrows(val1, val2, rssi) {
             if (rssi === 999) {
-                let x = (val2 - val1) / 100 * 40;
+                let x = (val2 - val1) / 100 * 75;
                 return val1 + x;
             }
 
@@ -579,7 +577,7 @@
             console.log("testing function");
         }
 
-        var functionsOut = [resetLocation, testPrint, reloadData, testing, testing2];
+        var functionsOut = [resetLocation, testPrint, reloadData];
         return functionsOut;
     },
 
