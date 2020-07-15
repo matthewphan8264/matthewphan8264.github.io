@@ -25,7 +25,7 @@ const RESOURCES = {
 "helper.js": "f6e71b9c323568c5929f652acf5a6948",
 "index.html": "0020a978f4cbca7638adca33a324f62d",
 "/": "0020a978f4cbca7638adca33a324f62d",
-"main.dart.js": "a35885967b4200c16cc8acecfc7f3e3a",
+"main.dart.js": "ba18cce3d7bb65e13370c222f17ae623",
 "main.dart.js.deps": "3eb1e45bb9d9e87006d54b03ea856af7"
 };
 
